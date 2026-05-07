@@ -6,20 +6,32 @@ import java.time.temporal.ChronoUnit;
 
 public class Employee {
 
+    private boolean isWorking;
     private int employeeId;
     private String name;
     private String role;
     private String department;
     private double payRate;
     private double hoursWorked;
+    private LocalDateTime clockedIn;
 
-    public Employee(int _employeeId, String _name, String _role, String _department, double _payRate, double _hoursWorked) {
-        this.employeeId = _employeeId;
-        this.name = _name;
-        this.role = _role;
-        this.department = _department;
-        this.payRate = _payRate;
-        this.hoursWorked = _hoursWorked;
+    public Employee(boolean isWorking, int employeeId, String name, String role, String department, double payRate, double hoursWorked, LocalDateTime clockedIn) {
+        this.isWorking = isWorking;
+        this.employeeId = employeeId;
+        this.name = name;
+        this.role = role;
+        this.department = department;
+        this.payRate = payRate;
+        this.hoursWorked = hoursWorked;
+        this.clockedIn = clockedIn;
+    }
+
+    public boolean isWorking() {
+        return isWorking;
+    }
+
+    public void setWorking(boolean working) {
+        isWorking = working;
     }
 
     public int getEmployeeId() {
@@ -54,6 +66,14 @@ public class Employee {
         this.hoursWorked = hoursWorked;
     }
 
+    public LocalDateTime getClockedIn() {
+        return clockedIn;
+    }
+
+    public void setClockedIn(LocalDateTime clockedIn) {
+        this.clockedIn = clockedIn;
+    }
+
     public double getRegularHours() {
         return Math.min(hoursWorked, 40);
     }
@@ -78,12 +98,14 @@ public class Employee {
         return hoursWorked + hoursWorkedToday;
     }
 
-    public LocalDateTime punchTimeCardNow() {
+    public LocalDateTime punchTimeCard() {
         return LocalDateTime.now();
     }
 
     public void displayEmployeeInfo() {
         System.out.println("""
+            Working: %b
+            
             Employee ID: %d
             Name: %s
             Department: %s
@@ -94,6 +116,7 @@ public class Employee {
             Overtime hours: %.2f
             Total pay: $%.2f
             """.formatted(
+                isWorking,
                 employeeId,
                 name,
                 department,

@@ -6,7 +6,10 @@ import com.pluralsight.hotelapp.service.HotelManager;
 import com.pluralsight.hotelapp.service.ReservationService;
 import com.pluralsight.hotelapp.service.RoomService;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class UserInterface {
 
@@ -24,7 +27,7 @@ public class UserInterface {
     public UserInterface() {
         guest = new Guest("Ringo Deniz", "562-718-2010", "ringo.deniz@gmail.com");
         room = new Room(101, RoomType.KING, 1, 200.00, false, true);
-        employee = new Employee(1, "Christian Deniz", "Hotel Manager", "Management", 20.75, 40);
+        employee = new Employee(false, 1, "Christian Deniz", "Hotel Manager", "Management", 20.75, 40, null);
         reservation = new Reservation(
                 guest,
                 room,
@@ -150,15 +153,15 @@ public class UserInterface {
     // UPDATE METHODS
     // ==================================================
 
-    public void addPunchTimeCard(Employee employee) {
+    public void addTimeCardManually() {
         boolean running = true;
 
         while (running) {
 
-            System.out.print("Enter clock-in time (24-hour format, whole hour only): ");
+            System.out.print("Enter clock-in time (24-hour format, whole hour): ");
             int clockInTime = manager.getIntInput();
 
-            System.out.print("Enter clock-out time (24-hour format, whole hour only): ");
+            System.out.print("Enter clock-out time (24-hour format, whole hour): ");
             int clockOutTime = manager.getIntInput();
 
             double hoursWorked = employee.punchTimeCard(clockInTime, clockOutTime);
@@ -168,7 +171,7 @@ public class UserInterface {
             System.out.println("Updated total hours worked: " + employee.getHoursWorked());
 
             System.out.println();
-            System.out.print("Would you like to add another time card? (yes/no): ");
+            System.out.print("Add another time card? (yes/no): ");
 
             String option = manager.getStringInput("yes", "no");
 
@@ -177,6 +180,74 @@ public class UserInterface {
             }
 
             System.out.println();
+        }
+    }
+
+    public void addClockInAutomatically() {
+        System.out.print("Would you like to clock in? (yes/no): ");
+
+        String option = manager.getStringInput("yes", "no");
+
+        if (option.equalsIgnoreCase("yes")) {
+            System.out.println("Clocking in...");
+
+            employee.setWorking(true);
+            employee.setClockedIn(employee.punchTimeCard());
+
+            manager.delay(1000);
+
+            System.out.println("Clocked in at: " +
+                    employee.getClockedIn().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        }
+    }
+
+    public void addClockOutAutomatically() {
+        System.out.print("Would you like to clock out? (yes/no): ");
+
+        String option = manager.getStringInput("yes", "no");
+
+        if (option.equalsIgnoreCase("yes")) {
+            System.out.println("Clocking out...");
+
+            System.out.println("Clocked in at: " +
+                    employee.getClockedIn().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+
+            employee.setWorking(false);
+
+            LocalDateTime clockIn = employee.getClockedIn();
+            LocalDateTime clockOut = employee.punchTimeCard();
+
+            Duration duration = Duration.between(clockIn, clockOut);
+
+            long hoursWorkedToday = duration.toHours();
+
+            employee.setHoursWorked(employee.getHoursWorked() + hoursWorkedToday);
+
+            employee.setClockedIn(null);
+
+            System.out.println("Clocked out at: " +
+                    clockOut.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+
+            System.out.println("Hours worked today: " + hoursWorkedToday);
+            System.out.println("Total hours worked: " + employee.getHoursWorked());
+
+            manager.delay(1000);
+        }
+    }
+
+    public void addPunchTimeCard(Employee employee) {
+        System.out.print("Select time card mode (manual/automatic): ");
+
+        String option = manager.getStringInput("manual", "automatic");
+
+        if (option.equalsIgnoreCase("manual")) {
+            addTimeCardManually();
+        } else {
+            if (employee.getClockedIn() == null) {
+                addClockInAutomatically();
+            } else {
+                addClockOutAutomatically();
+            }
         }
     }
 
@@ -237,6 +308,7 @@ public class UserInterface {
 
         if (option.equalsIgnoreCase("yes")) {
             addPunchTimeCard(employee);
+            return "employee";
         }
 
         System.out.println();
