@@ -49,8 +49,16 @@ public class UserInterface {
 
         System.out.println();
 
+        System.out.println("Exiting...");
+
+        manager.delay(1000);
+
         System.out.println("Thank you for using the Hotel Application!");
     }
+
+    // ==================================================
+    // DISPLAY METHODS
+    // ==================================================
 
     private void displayHeader(String title) {
         System.out.println();
@@ -88,7 +96,10 @@ public class UserInterface {
     // ==================================================
     // INPUT METHODS
     // ==================================================
+
     private void inputCheckIn() {
+        System.out.println();
+
         System.out.println("-----------------------------------");
         System.out.print("Would you like to check into this room and reserve it for your stay? (yes/no): ");
 
@@ -112,6 +123,8 @@ public class UserInterface {
     }
 
     public void inputCheckOut() {
+        System.out.println();
+
         System.out.println("-----------------------------------");
         System.out.print("Would you like to check out and make this room available again? (yes/no): ");
 
@@ -134,13 +147,51 @@ public class UserInterface {
     }
 
     // ==================================================
+    // UPDATE METHODS
+    // ==================================================
+
+    public void addPunchTimeCard(Employee employee) {
+        boolean running = true;
+
+        while (running) {
+
+            System.out.print("Enter clock-in time (24-hour format, whole hour only): ");
+            int clockInTime = manager.getIntInput();
+
+            System.out.print("Enter clock-out time (24-hour format, whole hour only): ");
+            int clockOutTime = manager.getIntInput();
+
+            double hoursWorked = employee.punchTimeCard(clockInTime, clockOutTime);
+            employee.setHoursWorked(hoursWorked);
+
+            System.out.println();
+            System.out.println("Updated total hours worked: " + employee.getHoursWorked());
+
+            System.out.println();
+            System.out.print("Would you like to add another time card? (yes/no): ");
+
+            String option = manager.getStringInput("yes", "no");
+
+            if (option.equalsIgnoreCase("no")) {
+                running = false;
+            }
+
+            System.out.println();
+        }
+    }
+
+    // ==================================================
     // MENU METHODS
     // ==================================================
+
     private String homeMenu() {
         System.out.println("1. Room information");
         System.out.println("2. Reservation summary");
         System.out.println("3. Employee information");
         System.out.println("4. Exit");
+
+        System.out.println();
+
         System.out.println("-----------------------------------");
         System.out.print("Choose an option: ");
 
@@ -179,40 +230,57 @@ public class UserInterface {
     }
 
     private String employeeMenu() {
-        System.out.print("Would you like to return home? (yes/no): ");
+        System.out.println("-----------------------------------");
+        System.out.print("Would you like to add a time card entry? (yes/no): ");
 
         String option = manager.getStringInput("yes", "no");
 
         if (option.equalsIgnoreCase("yes")) {
-            return "home";
-        } else {
-            return "employee";
+            addPunchTimeCard(employee);
         }
 
+        System.out.println();
+
+        System.out.println("Returning to home screen...");
+
+        return "home";
     }
 
     // ==================================================
     // SCREEN METHODS
     // ==================================================
+
     private String homeScreen() {
         displayHeader("HOTEL APPLICATION");
+
+        System.out.println();
+
         return homeMenu();
     }
 
     private String roomScreen() {
         displayHeader("ROOM INFORMATION");
+
+        System.out.println();
+
         roomService.displayRoomInfo(room);
         return roomMenu();
     }
 
     private String reservationScreen() {
         displayHeader("RESERVATION SUMMARY");
+
+        System.out.println();
+
         reservationService.displayReservationSummary(room, reservation);
         return reservationMenu();
     }
 
     private String employeeScreen() {
         displayHeader("EMPLOYEE INFORMATION");
+
+        System.out.println();
+
         employeeService.displayEmployeeInfo(employee);
         return employeeMenu();
     }

@@ -46,6 +46,14 @@ public class Employee {
         this.role = _role;
     }
 
+    public double getHoursWorked() {
+        return hoursWorked;
+    }
+
+    public void setHoursWorked(double hoursWorked) {
+        this.hoursWorked = hoursWorked;
+    }
+
     public double getRegularHours() {
         return Math.min(hoursWorked, 40);
     }
