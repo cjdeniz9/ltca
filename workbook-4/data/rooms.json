@@ -1,0 +1,65 @@
+[
+  {
+    "roomNumber": 101,
+    "roomType": "KING",
+    "numberOfBeds": 1,
+    "isDirty": false,
+    "isAvailable": true
+  },
+  {
+    "roomNumber": 102,
+    "roomType": "DOUBLE",
+    "numberOfBeds": 2,
+    "isDirty": true,
+    "isAvailable": false
+  },
+  {
+    "roomNumber": 103,
+    "roomType": "KING",
+    "numberOfBeds": 1,
+    "isDirty": false,
+    "isAvailable": true
+  },
+  {
+    "roomNumber": 104,
+    "roomType": "DOUBLE",
+    "numberOfBeds": 2,
+    "isDirty": false,
+    "isAvailable": true
+  },
+  {
+    "roomNumber": 105,
+    "roomType": "KING",
+    "numberOfBeds": 1,
+    "isDirty": true,
+    "isAvailable": false
+  },
+  {
+    "roomNumber": 106,
+    "roomType": "DOUBLE",
+    "numberOfBeds": 2,
+    "isDirty": false,
+    "isAvailable": true
+  },
+  {
+    "roomNumber": 107,
+    "roomType": "KING",
+    "numberOfBeds": 1,
+    "isDirty": true,
+    "isAvailable": false
+  },
+  {
+    "roomNumber": 108,
+    "roomType": "DOUBLE",
+    "numberOfBeds": 2,
+    "isDirty": false,
+    "isAvailable": true
+  },
+  {
+    "roomNumber": 109,
+    "roomType": "KING",
+    "numberOfBeds": 1,
+    "isDirty": false,
+    "isAvailable": false
+  }
+]
