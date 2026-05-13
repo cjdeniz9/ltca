@@ -1,4 +1,8 @@
-package com.pluralsight.assetsmanager.model;
+package com.pluralsight.assetsmanager;
+
+import com.pluralsight.assetsmanager.model.Asset;
+import com.pluralsight.assetsmanager.model.House;
+import com.pluralsight.assetsmanager.model.Vehicle;
 
 import java.util.ArrayList;
 
