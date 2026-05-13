@@ -7,20 +7,28 @@ public class Vehicle {
     private int cargoCapacity;
     private int fuelCapacity;
 
+    public Vehicle(String color, int numberOfPassengers, int cargoCapacity, int fuelCapacity) {
+        System.out.println("Trace -- in Vehicle(color, numberOfPassengers, cargoCapacity, fuelCapacity) w/ color, numberOfPassengers, cargoCapacity and fuelCapacity");
+        this.color = color;
+        this.numberOfPassengers = numberOfPassengers;
+        this.cargoCapacity = cargoCapacity;
+        this.fuelCapacity = fuelCapacity;
+    }
+
     public String getColor() {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public int getNumberOfPassengers() {
+        return numberOfPassengers;
+    }
+
+    public int getCargoCapacity() {
+        return cargoCapacity;
     }
 
     public int getFuelCapacity() {
         return fuelCapacity;
-    }
-
-    public void setFuelCapacity(int fuelCapacity) {
-        this.fuelCapacity = fuelCapacity;
     }
 
     public void displayVehicle(String vehicleType) {
