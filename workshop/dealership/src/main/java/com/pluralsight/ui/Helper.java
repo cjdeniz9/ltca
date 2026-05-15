@@ -1,6 +1,6 @@
-package com.pluralsight.dealership.ui;
+package com.pluralsight.ui;
 
-import com.pluralsight.dealership.models.enums.VehicleType;
+import com.pluralsight.models.enums.VehicleType;
 
 import java.util.Scanner;
 

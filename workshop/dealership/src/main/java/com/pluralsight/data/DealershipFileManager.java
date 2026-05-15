@@ -1,8 +1,8 @@
-package com.pluralsight.dealership.data;
+package com.pluralsight.data;
 
-import com.pluralsight.dealership.models.Dealership;
-import com.pluralsight.dealership.models.Vehicle;
-import com.pluralsight.dealership.models.enums.VehicleType;
+import com.pluralsight.models.Dealership;
+import com.pluralsight.models.Vehicle;
+import com.pluralsight.models.enums.VehicleType;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

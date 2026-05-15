@@ -1,6 +1,6 @@
-package com.pluralsight.dealership.models;
+package com.pluralsight.models;
 
-import com.pluralsight.dealership.models.enums.VehicleType;
+import com.pluralsight.models.enums.VehicleType;
 
 import java.util.ArrayList;
 import java.util.List;

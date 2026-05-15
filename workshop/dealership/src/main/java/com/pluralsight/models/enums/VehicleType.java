@@ -1,4 +1,4 @@
-package com.pluralsight.dealership.models.enums;
+package com.pluralsight.models.enums;
 
 import java.util.Arrays;
 import java.util.Optional;

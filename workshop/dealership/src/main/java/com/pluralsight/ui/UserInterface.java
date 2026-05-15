@@ -1,15 +1,15 @@
-package com.pluralsight.dealership.ui;
+package com.pluralsight.ui;
 
-import com.pluralsight.dealership.data.DealershipFileManager;
-import com.pluralsight.dealership.models.Dealership;
-import com.pluralsight.dealership.models.Vehicle;
-import com.pluralsight.dealership.models.enums.VehicleType;
-import com.pluralsight.dealership.ui.enums.MenuOption;
+import com.pluralsight.data.DealershipFileManager;
+import com.pluralsight.models.Dealership;
+import com.pluralsight.models.Vehicle;
+import com.pluralsight.models.enums.VehicleType;
+import com.pluralsight.ui.enums.MenuOption;
 
 import java.util.List;
 import java.util.Scanner;
 
-import static com.pluralsight.dealership.ui.Helper.*;
+import static com.pluralsight.ui.Helper.*;
 
 public class UserInterface {
     private final Scanner scanner;
