@@ -23,12 +23,25 @@ public class SalesContract extends Contract {
     }
 
     @Override
-    protected double getTotalPrice() {
-        return 0;
+    public double getTotalPrice() {
+        double salesTaxAmount = vehicleSold.getPrice() * SALES_TAX_RATE;
+
+        double processingFee = vehicleSold.getPrice() < PROCESSING_FEE_THRESHOLD ? PROCESSING_FEE_LOW : PROCESSING_FEE_HIGH;
+
+        return vehicleSold.getPrice() + RECORDING_FEE + salesTaxAmount + processingFee;
     }
 
     @Override
-    protected double getMonthlyPayment() {
-        return 0;
+    public double getMonthlyPayment() {
+        if (isFinanced) {
+            double loanInterest = vehicleSold.getPrice() >= PROCESSING_FEE_THRESHOLD ? 0.0425 / 12 : 0.0525 / 12;
+
+            int amountOfMonths = vehicleSold.getPrice() >= PROCESSING_FEE_THRESHOLD ? 48 : 24;
+
+            return getTotalPrice() * (loanInterest / (1 - Math.pow(1 + loanInterest, -amountOfMonths)));
+        } else {
+            return 0;
+        }
+
     }
 }

@@ -71,6 +71,7 @@ public class UserInterface {
             case LIST_ALL -> processAllVehiclesRequest();
             case ADD_VEHICLE -> processAddVehicleRequest();
             case REMOVE_VEHICLE -> processRemoveVehicleRequest();
+            case SELL_LEASE_VEHICLE -> processSellLeaseVehicle();
             case QUIT -> { }
         }
     }
@@ -153,6 +154,10 @@ public class UserInterface {
                 System.out.println("Remove cancelled.");
             }
         }, () -> System.out.println("No vehicle found with VIN " + vin + "."));
+    }
+
+    private void processSellLeaseVehicle() {
+
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
