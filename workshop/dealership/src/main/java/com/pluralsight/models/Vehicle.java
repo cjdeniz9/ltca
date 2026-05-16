@@ -103,7 +103,7 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return String.format("%-8d %-6d %-12s %-15s %-8s %-10s %,10d $%,10.2f",
+        return String.format("%-8d %-6d %-12s %-15s %-8s %-10s %,10d      $%,11.2f",
                 vin, year, make, model, vehicleType.getDisplayName(), color, odometer, price);
     }
 

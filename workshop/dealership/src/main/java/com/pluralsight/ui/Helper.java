@@ -23,6 +23,18 @@ public class Helper {
         }
     }
 
+    public static String readEmail(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String email = scanner.nextLine().trim();
+
+            if (email.contains("@") && email.contains(".")) {
+                return email;
+            }
+            System.out.println("Invalid email. Please try again.");
+        }
+    }
+
     public static VehicleType readVehicleType(String prompt) {
         while (true) {
             String input = readRequiredString(prompt);

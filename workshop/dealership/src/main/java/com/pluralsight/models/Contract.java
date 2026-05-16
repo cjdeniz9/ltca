@@ -6,16 +6,12 @@ public abstract class Contract {
      protected String customerName;
      protected String customerEmail;
      protected Vehicle vehicleSold;
-     protected double totalPrice;
-     protected double monthlyPayment;
 
-    public Contract(String dateOfContact, String customerName, String customerEmail, Vehicle vehicleSold, double totalPrice, double monthlyPayment) {
+    public Contract(String dateOfContact, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.dateOfContact = dateOfContact;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.vehicleSold = vehicleSold;
-        this.totalPrice = totalPrice;
-        this.monthlyPayment = monthlyPayment;
     }
 
     public String getDateOfContact() {
@@ -53,5 +49,7 @@ public abstract class Contract {
     protected abstract double getTotalPrice();
 
     protected abstract double getMonthlyPayment();
+
+    protected abstract String toCsvLine();
 
 }
