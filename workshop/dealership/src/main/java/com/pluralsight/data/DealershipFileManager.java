@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DealershipFileManager {
-    private static final Path INVENTORY_PATH = Path.of("workshop", "src", "main", "resources",  "inventory.csv");
+    private static final Path INVENTORY_PATH = Path.of("workshop", "dealership", "src", "main", "resources",  "inventory.csv");
     private static final String DELIMITER = "\\|";
 
     public Dealership getDealership() {

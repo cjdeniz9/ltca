@@ -1,11 +1,15 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.data.ContractFileManager;
 import com.pluralsight.data.DealershipFileManager;
 import com.pluralsight.models.Dealership;
+import com.pluralsight.models.SalesContract;
 import com.pluralsight.models.Vehicle;
 import com.pluralsight.models.enums.VehicleType;
 import com.pluralsight.ui.enums.MenuOption;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,12 +17,14 @@ import static com.pluralsight.ui.Helper.*;
 
 public class UserInterface {
     private final Scanner scanner;
-    private final DealershipFileManager fileManager;
+    private final DealershipFileManager dealershipFileManager;
+    private final ContractFileManager contractFileManager;
     private Dealership dealership;
 
     public UserInterface() {
         this.scanner = new Scanner(System.in);
-        this.fileManager = new DealershipFileManager();
+        this.dealershipFileManager = new DealershipFileManager();
+        this.contractFileManager = new ContractFileManager();
     }
 
     public void display() {
@@ -37,7 +43,7 @@ public class UserInterface {
     }
 
     private void init() {
-        this.dealership = fileManager.getDealership();
+        this.dealership = dealershipFileManager.getDealership();
     }
 
     private void displayHeader() {
@@ -133,7 +139,7 @@ public class UserInterface {
 
         Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
         dealership.addVehicle(vehicle);
-        fileManager.saveDealership(dealership);
+        dealershipFileManager.saveDealership(dealership);
 
         System.out.println("Vehicle added and inventory saved.");
     }
@@ -148,7 +154,7 @@ public class UserInterface {
             String confirmation = readString("Remove this vehicle? yes/no: ");
             if (confirmation.equalsIgnoreCase("yes") || confirmation.equalsIgnoreCase("y")) {
                 dealership.removeVehicleByVin(vin);
-                fileManager.saveDealership(dealership);
+                dealershipFileManager.saveDealership(dealership);
                 System.out.println("Vehicle removed and inventory saved.");
             } else {
                 System.out.println("Remove cancelled.");
@@ -157,7 +163,41 @@ public class UserInterface {
     }
 
     private void processSellLeaseVehicle() {
+        int vin = readPositiveInt("Enter VIN of vehicle to sell/lease: ");
 
+        dealership.findVehicleByVin(vin).ifPresentOrElse(
+                this::handleSellLease,
+                () -> System.out.println("No vehicle found with VIN " + vin + ".")
+        );
+    }
+
+    private void handleSellLease(Vehicle vehicle) {
+        System.out.println();
+        System.out.println("Vehicle found:");
+        displayVehicles(List.of(vehicle));
+
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String name = readRequiredString("Name: ");
+        String email = readEmail("Email: ");
+
+        String contractType = readString("Would you like to sell or lease the vehicle? (sell/lease): ");
+
+        if (contractType.equalsIgnoreCase("sell") || contractType.equalsIgnoreCase("s")) {
+            processSale(vehicle, date, name, email);
+        } else {
+            System.out.println("Invalid option. Please enter 'sell' or 'lease'.");
+        }
+    }
+
+    private void processSale(Vehicle vehicle, String date, String name, String email) {
+        boolean isFinanced = readString("Would you like to finance? (yes/no): ").equalsIgnoreCase("yes");
+
+        SalesContract salesContract = new SalesContract(date, name, email, vehicle, isFinanced);
+        contractFileManager.saveContract(salesContract);
+
+        System.out.println("Sale contract created successfully.");
+
+        dealership.removeVehicleByVin(vehicle.getVin());
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
@@ -168,17 +208,20 @@ public class UserInterface {
         }
 
         System.out.println();
-        System.out.printf("%-8s %-6s %-12s %-15s %-8s %-10s %10s %11s%n",
+        System.out.printf("%-8s %-6s %-12s %-15s %-8s %-10s %10s %17s%n",
                 "VIN", "YEAR", "MAKE", "MODEL", "TYPE", "COLOR", "ODOMETER", "PRICE");
-        System.out.println("---------------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------");
 
         for (Vehicle vehicle : vehicles) {
             System.out.println(vehicle);
         }
 
-        System.out.println("---------------------------------------------------------------------------------------");
-        System.out.println("Total vehicles: " + vehicles.size());
-        pause();
+        System.out.println("---------------------------------------------------------------------------------------------");
+
+        if (vehicles.size() > 1) {
+            System.out.println("Total vehicles: " + vehicles.size());
+            pause();
+        }
     }
 
     private void pause() {
