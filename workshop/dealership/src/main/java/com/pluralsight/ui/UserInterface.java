@@ -3,6 +3,7 @@ package com.pluralsight.ui;
 import com.pluralsight.data.ContractFileManager;
 import com.pluralsight.data.DealershipFileManager;
 import com.pluralsight.models.Dealership;
+import com.pluralsight.models.LeaseContract;
 import com.pluralsight.models.SalesContract;
 import com.pluralsight.models.Vehicle;
 import com.pluralsight.models.enums.VehicleType;
@@ -184,6 +185,8 @@ public class UserInterface {
 
         if (contractType.equalsIgnoreCase("sell") || contractType.equalsIgnoreCase("s")) {
             processSale(vehicle, date, name, email);
+        } else if (contractType.equalsIgnoreCase("lease") || contractType.equalsIgnoreCase("l")) {
+            processLease(vehicle, date, name, email);
         } else {
             System.out.println("Invalid option. Please enter 'sell' or 'lease'.");
         }
@@ -198,6 +201,17 @@ public class UserInterface {
         System.out.println("Sale contract created successfully.");
 
         dealership.removeVehicleByVin(vehicle.getVin());
+        dealershipFileManager.saveDealership(dealership);
+    }
+
+    private void processLease(Vehicle vehicle, String date, String name, String email) {
+        LeaseContract leaseContract = new LeaseContract(date, name, email, vehicle);
+        contractFileManager.saveContract(leaseContract);
+
+        System.out.println("Lease contract created successfully.");
+
+        dealership.removeVehicleByVin(vehicle.getVin());
+        dealershipFileManager.saveDealership(dealership);
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {

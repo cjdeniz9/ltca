@@ -1,6 +1,7 @@
 package com.pluralsight.data;
 
 import com.pluralsight.models.Contract;
+import com.pluralsight.models.LeaseContract;
 import com.pluralsight.models.SalesContract;
 
 import java.io.BufferedWriter;
@@ -22,6 +23,8 @@ public class ContractFileManager {
 
             if (contract instanceof SalesContract salesContract) {
                 writer.write(salesContract.toCsvLine());
+            } else if (contract instanceof LeaseContract leaseContract) {
+                writer.write(leaseContract.toCsvLine());
             } else {
                 throw new IllegalStateException("Unknown contract type: " + contract.getClass().getName());
             }
