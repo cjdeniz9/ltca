@@ -31,9 +31,10 @@ public class UserInterface {
     public void display() {
         init();
 
+        displayHeader();
+
         MenuOption selectedOption;
         do {
-            displayHeader();
             displayMenu();
             int choice = readInt("  ➤  Choose an option: ");
             selectedOption = MenuOption.fromCode(choice).orElse(null);
@@ -49,20 +50,65 @@ public class UserInterface {
         this.dealership = dealershipFileManager.getDealership();
     }
 
+    private void typeLine(String text, int delayMs) {
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            try {
+                Thread.sleep(delayMs);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println();
+    }
+
+    private String center(String text) {
+        int length = stripAnsi(text).length();
+        int padding = Math.max(0, (WIDTH - length) / 2);
+        return " ".repeat(padding) + text;
+    }
+
+    private String stripAnsi(String text) {
+        return text.replaceAll("\u001B\\[[;\\d]*m", "");
+    }
+
+    private static final String RESET = "\u001B[0m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String WHITE_BOLD = "\u001B[1;37m";
+
+    // slightly reduced width for better balance with menu
+    private static final int WIDTH = 56;
+
+    // adjusted border to match width cleanly
+    private static final String LINE = "────────────────────────────────────────────────────";
+
     private void displayHeader() {
-        System.out.println();
-        System.out.println("  ╔══════════════════════════════════════════════════╗");
+        String name = dealership.getName().toUpperCase();
+
+        System.out.println("\n");
+
+        // CAR (naturally centered using updated width)
+        typeLine(center(BLUE + "           ______        ______" + RESET), 4);
+        typeLine(center(BLUE + "          /|_||_\\`.__   /|_||_\\`.__" + RESET), 4);
+        typeLine(center(BLUE + "         (   _    _ _\\ (   _    _ _\\" + RESET), 4);
+        typeLine(center(BLUE + "         =`-(_)--(_)-'  =`-(_)--(_)-'" + RESET), 4);
+
         System.out.println();
 
-        System.out.printf("      🚗  %-42s%n", dealership.getName().toUpperCase());
-        System.out.printf("      📍  %-42s%n", dealership.getAddress());
-        System.out.printf("      📞  %-42s%n", dealership.getPhone());
+        typeLine(center(WHITE_BOLD + "CAR DEALERSHIP SYSTEM" + RESET), 8);
+        typeLine(center("Simple • Fast • Reliable"), 5);
 
-        System.out.println();
-        System.out.println("  ╚══════════════════════════════════════════════════╝");
+        typeLine(center(BLUE + LINE + RESET), 4);
+
+        typeLine(center(BLUE + "Name    : " + RESET + name), 5);
+        typeLine(center(BLUE + "Address : " + RESET + dealership.getAddress()), 5);
+        typeLine(center(BLUE + "Phone   : " + RESET + dealership.getPhone()), 5);
+
+        typeLine(center(BLUE + LINE + RESET), 4);
     }
 
     private void displayMenu() {
+        System.out.println();
         System.out.println("  ┌──────────────────────────────────────────────────┐");
         System.out.println("  │         WHAT CAN WE HELP YOU WITH TODAY?         │");
         System.out.println("  ├──────────────────────────────────────────────────┤");
@@ -88,6 +134,8 @@ public class UserInterface {
         System.out.println("      💰  SALES");
         System.out.printf("      %-3d %-42s%n", MenuOption.SELL_LEASE_VEHICLE.getCode(), MenuOption.SELL_LEASE_VEHICLE.getLabel());
 
+        System.out.println();
+        System.out.printf("      %-3d %-42s%n", MenuOption.ADMIN.getCode(), MenuOption.ADMIN.getLabel());
         System.out.println();
 
         System.out.println("      🚪  EXIT");
@@ -115,7 +163,20 @@ public class UserInterface {
             case ADD_VEHICLE -> processAddVehicleRequest();
             case REMOVE_VEHICLE -> processRemoveVehicleRequest();
             case SELL_LEASE_VEHICLE -> processSellLeaseVehicle();
+            case ADMIN -> processAdminView();
             case QUIT -> { }
+        }
+    }
+
+    private void processAdminView() {
+        String password = "java";
+
+        String input = readRequiredString("  Password: ");
+
+        if (password.equalsIgnoreCase(input)) {
+            System.out.println("-- ENTERING ADMIN PANEL --");
+        } else {
+            System.out.println("Invalid password!");
         }
     }
 
