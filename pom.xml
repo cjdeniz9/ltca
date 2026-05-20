@@ -15,6 +15,7 @@
         <module>workbook-4</module>
         <module>workshop</module>
         <module>workbook-5</module>
+        <module>workbook-6</module>
     </modules>
 
     <properties>
